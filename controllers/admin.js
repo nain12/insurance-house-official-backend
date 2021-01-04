@@ -1,35 +1,45 @@
 const User = require("../models/user");
+const bcrypt = require("bcryptjs");
 
 module.exports.getUsers = (req, res, next) => {
-  User.findAll({
-    where: {
-      role: "User",
-    },
-  })
-    .then((result) => {
-      res.status(200).send({ result: result });
+  if (req.session.isLoggedIn) {
+    User.findAll({
+      where: {
+        role: "User",
+      },
     })
-    .catch((err) => {
-      res.status(400).send({ error: err });
-    });
+      .then((result) => {
+        res.status(200).send({ result: result });
+      })
+      .catch((err) => {
+        res.status(400).send({ error: err });
+      });
+  }
 };
 
 module.exports.postUser = (req, res, next) => {
   const name = req.body.name;
   const email = req.body.email;
+  const password = req.body.password;
   const policy = req.body.policy;
   const role = req.body.role;
   const uploads = req.body.uploads;
   const comments = req.body.comments;
 
-  User.create({
-    name: name,
-    email: email,
-    policy: policy,
-    role: role,
-    uploads: uploads,
-    comments: comments,
-  })
+  bcrypt
+    .hash(password, 12)
+    .then((hashedPassword) => {
+      console.log("admin", hashedPassword);
+      User.create({
+        name: name,
+        email: email,
+        password: hashedPassword,
+        policy: policy,
+        role: role,
+        uploads: uploads,
+        comments: comments,
+      });
+    })
     .then((result) => {
       res.status(200).send({ result: "User added successfully!" });
     })
