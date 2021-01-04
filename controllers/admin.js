@@ -2,7 +2,6 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 
 module.exports.getUsers = (req, res, next) => {
-  if (req.session.isLoggedIn) {
     User.findAll({
       where: {
         role: "User",
@@ -14,7 +13,6 @@ module.exports.getUsers = (req, res, next) => {
       .catch((err) => {
         res.status(400).send({ error: err });
       });
-  }
 };
 
 module.exports.postUser = (req, res, next) => {
