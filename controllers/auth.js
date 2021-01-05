@@ -32,13 +32,14 @@ module.exports.postLogin = (req, res, next) => {
       const token = jwt.sign(
         { email: email, id: user.id },
         "$ghy#izpe;%VT*ewdjo",
-        { expiresIn: "1h" }
+        { expiresIn: "24h" }
       );
-      res.setHeader('Set-Cookie',`token=${token}; HttpOnly=true`);
+      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()}`);
       return res.status(200).send({ email: user.email });
     })
     .catch((err) => {
-      console.log("error", err.message);
-      return res.status(500).send({ result: "Error" });
+       const error = new Error('Error during Login');
+       error.statusCode = 500;
+       throw err;
     });
 };
