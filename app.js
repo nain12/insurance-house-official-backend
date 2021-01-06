@@ -1,22 +1,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require('cors');
 
 const adminRoutes = require("./routes/admin");
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
 
 const sequelize = require("./util/database");
-/* const session = require("express-session"); */
-/* const SequelizeStore = require("connect-session-sequelize")(session.Store); */
-/* const store = new SequelizeStore({
-  db: sequelize,
-}); */
 const user = require("./models/user");
 
 const app = express();
 
-app.use(cors());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", `https://nain12.github.io`);
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -27,14 +20,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-/* app.use(
-  session({
-    secret: "$ghy#izpe;%VT*ewdjo",
-    store: store,
-    resave: false,
-    saveUninitialized: false,
-  })
-); */
+
 app.get("/users", adminRoutes);
 app.post("/add-user", adminRoutes);
 app.post("/delete-user", adminRoutes);
