@@ -18,7 +18,7 @@ app.use((req, res, next) => {
   }
   //res.setHeader("Access-Control-Allow-Origin", "https://nain12.github.io");
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   next();
 });
@@ -29,6 +29,7 @@ app.use(bodyParser.json());
 app.get("/users", adminRoutes);
 app.post("/add-user", adminRoutes);
 app.post("/delete-user", adminRoutes);
+app.post("/update-user", adminRoutes);
 app.post("/login", authRoutes);
 
 app.get("/user/:id", userRoutes);
