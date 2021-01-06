@@ -34,7 +34,7 @@ module.exports.postLogin = (req, res, next) => {
         "$ghy#izpe;%VT*ewdjo",
         { expiresIn: "24h" }
       );
-      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};SameSite=None; Secure`);
+      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};`);
       return res.status(200).send({ email: user.email });
     })
     .catch((err) => {
