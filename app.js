@@ -15,6 +15,7 @@ const user = require("./models/user");
 
 const app = express();
 
+app.use(cors());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", `https://nain12.github.io`);
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
