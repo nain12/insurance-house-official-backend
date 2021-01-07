@@ -11,7 +11,7 @@ const user = require("./models/user");
 const app = express();
 
 app.use((req, res, next) => {
-  const allowedOrigins = [ "https://nain12.github.io", "http://localhost:3000"];
+  const allowedOrigins = [ "https://nain12.github.io", "http://localhost:3000", "https://insurance-house-official.herokuapp.com"];
   const origin = req.headers.origin;
   console.log('Orgin',origin);
   if (allowedOrigins.includes(origin)) {
