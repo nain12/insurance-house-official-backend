@@ -74,3 +74,4 @@ module.exports.deleteUser = (req, res, next) => {
       res.status(400).send({ result: err.message });
     });
 };
+

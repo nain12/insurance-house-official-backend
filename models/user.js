@@ -16,6 +16,14 @@ const User = sequelize.define("user", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  resetToken: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  resetTokenExpiration: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
   password: {
     type: Sequelize.STRING,
     allowNull: false,

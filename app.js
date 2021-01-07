@@ -31,7 +31,9 @@ app.post("/add-user", adminRoutes);
 app.post("/delete-user", adminRoutes);
 app.post("/update-user", adminRoutes);
 app.post("/login", authRoutes);
-
+app.post("/send-mail", authRoutes);
+app.post("/reset-password", authRoutes);
+app.post("/change-password", authRoutes);
 app.get("/user/:id", userRoutes);
 
 sequelize
