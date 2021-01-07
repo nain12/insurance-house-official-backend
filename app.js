@@ -20,6 +20,7 @@ app.use((req, res, next) => {
   //res.setHeader("Access-Control-Allow-Origin", "https://nain12.github.io");
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin");
+  res.setHeader("Access-Control-Expose-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   console.log('Response Headers', res.headers);
   next();
