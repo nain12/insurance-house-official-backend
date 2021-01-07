@@ -54,7 +54,7 @@ module.exports.postLogin = (req, res, next) => {
         "$ghy#izpe;%VT*ewdjo",
         { expiresIn: "24h" }
       );
-      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};SameSite=None; Secure; Domain=https://insurance-house-official-back.herokuapp.com`);
+      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};SameSite=None; Secure; Domain=insurance-house-official-back.herokuapp.com`);
       return res.status(200).send({ email: req.body.email });
     })
     .catch((err) => {
