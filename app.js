@@ -13,13 +13,15 @@ const app = express();
 app.use((req, res, next) => {
   const allowedOrigins = [ "https://nain12.github.io", "http://localhost:3000"];
   const origin = req.headers.origin;
+  console.log('Orgin',origin);
   if (allowedOrigins.includes(origin)) {
        res.setHeader('Access-Control-Allow-Origin', origin);
   }
   //res.setHeader("Access-Control-Allow-Origin", "https://nain12.github.io");
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin");
   res.setHeader("Access-Control-Allow-Credentials", "true");
+  console.log('Response Headers', res.headers);
   next();
 });
 
