@@ -55,7 +55,7 @@ module.exports.postLogin = (req, res, next) => {
         { expiresIn: "24h" }
       );
       res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};SameSite=None;Secure;`);
-      return res.status(200).send({ email: req.body.email });
+      return res.status(200).send({ email: req.body.email, token: token });
     })
     .catch((err) => {
        const error = new Error('Error during Login');
