@@ -1,16 +1,24 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const sequelize = require("sequelize");
+
+const ITEMS_PER_PAGE = 10;
 
 module.exports.getUsers = (req, res, next) => {
+    const page = req.query.page; 
+    const offsetNumber = page - 1 > 0 ? page - 1 : 0;
     User.findAll({
       where: {
         role: "User",
       },
+      offset: offsetNumber * ITEMS_PER_PAGE, limit: 10
     })
       .then((result) => {
-        res.status(200).send({ result: result });
+       /*  const noOfUsers = result[0].dataValues; */
+        res.status(200).send({ result: result,/*  totalUsers: noOfUsers, */ /* hasNextPage: ITEMS_PER_PAGE * page < noOfUsers, */ hasPreviousPage: page > 1, nextPage: page + 1, previousPage: page - 1, /* lastPage: Math.ceil(noOfUsers/ITEMS_PER_PAGE),  */currentPage: page  });
       })
       .catch((err) => {
+        console.log(err);
         res.status(400).send({ error: err });
       });
 };
@@ -20,7 +28,7 @@ module.exports.postUser = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const policy = req.body.policy;
-  const role = req.body.role;
+  const role = "User";
   const uploads = req.body.uploads;
   const comments = req.body.comments;
 

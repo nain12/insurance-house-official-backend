@@ -26,6 +26,11 @@ module.exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   let user;
+  let role;
+  let id;
+  let name;
+  let policy;
+  let comments;
   User.findOne({
     where: {
       email: email,
@@ -34,6 +39,12 @@ module.exports.postLogin = (req, res, next) => {
     .then((user) => {
       if (user) {
         user = user.dataValues;
+        role = user.role;
+        id = user.id;
+        name = user.name;
+        policy = user.policy,
+        comments = user.comments;
+        console.log('User', user);
         return bcrypt.compare(password, user.password);
       } else {
         const error = new Error(
@@ -52,10 +63,10 @@ module.exports.postLogin = (req, res, next) => {
       const token = jwt.sign(
         { email: req.body.email },
         "$ghy#izpe;%VT*ewdjo",
-        { expiresIn: "24h" }
+        { expiresIn: "12h" }
       );
-      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};SameSite=None;Secure;`);
-      return res.status(200).send({ email: req.body.email, token: token });
+      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};`);
+      return res.status(200).send({ email: req.body.email, token: token, role: role, id: id, name: name, policy: policy, comments: comments });
     })
     .catch((err) => {
        const error = new Error('Error during Login');
@@ -93,7 +104,7 @@ module.exports.postReset =(req, res, next) => {
           to: email,
           subject: 'Password Reset The Insurance House',
           html: ` <h2>You requested a New Password</h2>
-          <p>Click this <a href="http://localhost:3000/reset-password?${token}">link</a> to reset the password</p>`
+          <p>Click this <a href="http://31.220.51.195/reset-password?${token}">link</a> to reset the password</p>`
       }
       transporter.sendMail(mail, (err, response) => {
         if(err){
