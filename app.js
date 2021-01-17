@@ -11,7 +11,7 @@ const app = express();
 
 
 app.use((req, res, next) => {
-  const allowedOrigins = [ "https://nain12.github.io", "http://localhost:3000", "https://insurance-house-official.herokuapp.com", "http://www.deepuvalecha.com"];
+  const allowedOrigins = [ "https://nain12.github.io", "http://localhost:3000", "https://insurance-house-official.herokuapp.com", "http://www.deepuvalecha.com", "http://deepuvalecha.com"];
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
        res.setHeader('Access-Control-Allow-Origin', origin);
