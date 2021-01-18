@@ -65,7 +65,7 @@ module.exports.postLogin = (req, res, next) => {
         "$ghy#izpe;%VT*ewdjo",
         { expiresIn: "12h" }
       );
-      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};Max-Age=86400000;SameSite=None;Secure;`);
+      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};Max-Age=86400000;`);
       return res.status(200).send({ email: req.body.email, token: token, role: role, id: id, name: name, policy: policy, comments: comments });
     })
     .catch((err) => {
