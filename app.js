@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get("/users", adminRoutes);
+app.get("/view-records", adminRoutes);
 app.post("/add-user", adminRoutes);
 app.post("/delete-user", adminRoutes);
 app.post("/update-user", adminRoutes);
