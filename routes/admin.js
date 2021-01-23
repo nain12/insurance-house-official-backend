@@ -5,7 +5,7 @@ const routes = express.Router();
 
 routes.get("/view-records", isAuth, controller.getUsers);
 routes.post("/add-user", controller.postUser);
-routes.post("/delete-user", isAuth, controller.deleteUser);
+routes.delete("/delete-user", isAuth, controller.deleteUser);
 routes.post("/update-user", isAuth, controller.updateUser);
 
 module.exports = routes;
