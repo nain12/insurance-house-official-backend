@@ -1,5 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const multer = require("multer");
+const path = require("path");
 
 const adminRoutes = require("./routes/admin");
 const userRoutes = require("./routes/user");
@@ -23,8 +25,19 @@ app.use((req, res, next) => {
   next();
 });
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + "-" + file.originalname
+    );
+  }
+});
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(multer({ storage: fileStorage }).array("uploads", 10));
 
 app.get("/view-records", adminRoutes);
 app.post("/add-user", adminRoutes);

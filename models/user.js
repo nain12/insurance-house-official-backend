@@ -37,7 +37,7 @@ const User = sequelize.define("user", {
     defaultValue: "user",
   },
   uploads: {
-    type: Sequelize.STRING,
+    type: Sequelize.BLOB,
     allowNull: true,
   },
   comments: {
