@@ -52,11 +52,19 @@ module.exports.postUser = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
+  let fileNames = "";
+  for (let i = 0; i < req.files.length; i++) {
+        if (i == req.files.length - 1) {
+          fileNames = req.files[i].filename;
+        } else {
+          fileNames = req.files[i].filename + ",";
+  }
+}
   const userId = req.body.id;
   const name = req.body.name;
   const email = req.body.email;
   const policy = req.body.policy;
-  const uploads = req.body.uploads;
+  const uploads = fileNames;
   const comments = req.body.comments;
 
   User.update({ name: name, email: email, policy: policy, uploads: uploads, comments: comments}, {
@@ -65,7 +73,7 @@ module.exports.updateUser = (req, res, next) => {
     }}).then((result) => {
       res.status(200).send({ result: "User updated successfully!" });
     })
-    .catch((err) => res.send(400).send({ error: err.message }));
+    .catch((err) => res.status(400).send({ error: err.message }));
 };
 
 module.exports.deleteUser = (req, res, next) => {
