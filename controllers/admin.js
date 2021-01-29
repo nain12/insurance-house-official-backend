@@ -66,14 +66,18 @@ module.exports.updateUser = (req, res, next) => {
   const policy = req.body.policy;
   const uploads = fileNames;
   const comments = req.body.comments;
-
+  console.log("Request headers", req.body, fileNames);
   User.update({ name: name, email: email, policy: policy, uploads: uploads, comments: comments}, {
     where: {
       id: userId
     }}).then((result) => {
+      console.log("Result", result);
       res.status(200).send({ result: "User updated successfully!" });
     })
-    .catch((err) => res.status(400).send({ error: err.message }));
+    .catch((err) => {
+      console.log("Error", err);
+      res.status(400).send({ error: err.message })
+    });
 };
 
 module.exports.deleteUser = (req, res, next) => {
