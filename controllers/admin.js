@@ -52,21 +52,21 @@ module.exports.postUser = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
-  let fileNames = "";
+  /* let fileNames = "";
   for (let i = 0; i < req.files.length; i++) {
         if (i == req.files.length - 1) {
           fileNames = req.files[i].filename;
         } else {
           fileNames = req.files[i].filename + ",";
   }
-}
+} */
   const userId = req.body.id;
   const name = req.body.name;
   const email = req.body.email;
   const policy = req.body.policy;
-  const uploads = fileNames;
+  const uploads = req.files.join();
   const comments = req.body.comments;
-  console.log("Request headers", req.body, fileNames);
+  
   User.update({ name: name, email: email, policy: policy, uploads: uploads, comments: comments}, {
     where: {
       id: userId
