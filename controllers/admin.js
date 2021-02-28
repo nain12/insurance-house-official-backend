@@ -1,7 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const Sequelize = require("sequelize");
-
 const ITEMS_PER_PAGE = 10;
 
 module.exports.getUsers = (req, res, next) => {
@@ -52,29 +51,41 @@ module.exports.postUser = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
-  console.log("Files", req.files);
+  console.log("Files", +  req.files);
   let fileNames = [];
    for(let i = 0; i < req.files.length; i++) {
      fileNames.push(req.files[i].filename);
    }
-  
+
   const userId = req.body.id;
   const name = req.body.name;
   const email = req.body.email;
   const policy = req.body.policy;
-  const uploads = fileNames.join(" ");
+  const uploads = fileNames.join("\r\n");
   const comments = req.body.comments;
    
-  User.update({ name: name, email: email, policy: policy, uploads: uploads, comments: comments}, {
-    where: {
-      id: userId
-    }}).then((result) => {
-      console.log("Result", result);
+  User.findOne({ where: { id:userId }}).then((user) => {
+    return User.update(
+      {
+        name: name,
+        email: email,
+        policy: policy,
+        uploads: user.uploads + "\n"+ uploads,
+        comments: comments,
+      },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    )
+  })
+    .then((result) => {
       res.status(200).send({ result: "User updated successfully!" });
     })
     .catch((err) => {
       console.log("Error", err);
-      res.status(400).send({ error: err.message })
+      res.status(400).send({ error: err.message });
     });
 };
 
@@ -92,4 +103,5 @@ module.exports.deleteUser = (req, res, next) => {
       res.status(400).send({ result: err.message });
     });
 };
+
 

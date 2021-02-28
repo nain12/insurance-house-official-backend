@@ -15,10 +15,10 @@ const app = express();
 app.use((req, res, next) => {
   const allowedOrigins = [ "https://nain12.github.io", "http://localhost:3000", "https://insurance-house-official.herokuapp.com", "https://deepuvalecha.com"];
   const origin = req.headers.origin;
-  consolelog("Origin", origin);
- /*  if (allowedOrigins.includes(origin)) {
+  console.log("Origin", origin);
+  if (allowedOrigins.includes(origin)) {
        res.setHeader('Access-Control-Allow-Origin', origin);
-  } */
+  }
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin");
   res.setHeader("Access-Control-Expose-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin");
@@ -38,7 +38,7 @@ const fileStorage = multer.diskStorage({
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(multer({ storage: fileStorage }).array("uploads", 10));
+app.use(multer({ storage: fileStorage, limits: { fieldSize: 25 * 1024 * 1024 } }).array("uploads", 10));
 
 app.get("/view-records", adminRoutes);
 app.post("/add-user", adminRoutes);
@@ -49,6 +49,17 @@ app.post("/send-mail", authRoutes);
 app.post("/reset-password", authRoutes);
 app.post("/change-password", authRoutes);
 app.get("/user/:id", userRoutes);
+app.get("/download", function(req, res, next){
+  const fileName = req.query.file;
+  console.log("Filename", fileName);
+  const file = `${__dirname}/uploads/${fileName}`;
+  if(file) {
+  res.download(file, fileName); // Set disposition and send it.
+  }
+  else {
+    res.status(404).send({ result: err.message });
+  }
+});
 
 sequelize
   .sync()
