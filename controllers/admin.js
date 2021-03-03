@@ -61,7 +61,7 @@ module.exports.updateUser = (req, res, next) => {
   const name = req.body.name;
   const email = req.body.email;
   const policy = req.body.policy;
-  const uploads = fileNames.join("\r\n");
+  const uploads = fileNames.join(",");
   const comments = req.body.comments;
    
   User.findOne({ where: { id:userId }}).then((user) => {
@@ -70,7 +70,7 @@ module.exports.updateUser = (req, res, next) => {
         name: name,
         email: email,
         policy: policy,
-        uploads: user.uploads + "\n"+ uploads,
+        uploads: user.uploads ? user.uploads + " " + uploads : uploads,
         comments: comments,
       },
       {

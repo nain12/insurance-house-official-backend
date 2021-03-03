@@ -25,12 +25,12 @@ const transporter = nodemailer.createTransport({
 module.exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  let user;
   let role;
   let id;
   let name;
   let policy;
   let comments;
+  let uploads;
   User.findOne({
     where: {
       email: email,
@@ -44,6 +44,7 @@ module.exports.postLogin = (req, res, next) => {
         name = user.name;
         policy = user.policy,
         comments = user.comments;
+        uploads = user.uploads;
         console.log('User', user);
         return bcrypt.compare(password, user.password);
       } else {
@@ -65,8 +66,8 @@ module.exports.postLogin = (req, res, next) => {
         "$ghy#izpe;%VT*ewdjo",
         { expiresIn: "12h" }
       );
-      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};Max-Age=86400000;SameSite=None;Secure;Domain=.deepuvalecha.com`);
-      return res.status(200).send({ email: req.body.email, token: token, role: role, id: id, name: name, policy: policy, comments: comments });
+      res.setHeader('Set-Cookie',`token=${token}; expires=${new Date(new Date().getTime()+86409000).toUTCString()};Max-Age=86400000;`);
+      return res.status(200).send({ email: req.body.email, token: token, role: role, id: id, name: name, policy: policy, comments: comments, uploads: uploads });
     })
     .catch((err) => {
        const error = new Error('Error during Login');
