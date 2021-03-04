@@ -175,9 +175,10 @@ module.exports.verifyResetPassword = (req, res, next) => {
 } 
 
 module.exports.resetPassword = (req, res, next) => {
+  console.log("Request params", req.query)
   User.findOne({
    where: {
-     email:req.body.email
+    resetToken:req.query.token
    }
  }).then(user => {
    if(!user) {
@@ -187,13 +188,10 @@ module.exports.resetPassword = (req, res, next) => {
      err.message = "No user found."
      throw err;
    }
-   bcrypt
-   .hash(req.body.password, 12)
-   .then((hashedPassword) => {
    return User.update(
-     { password: hashedPassword },
-     { where: { email: req.body.email } }
-   )
+    { password: req.body.password },
+    { where: { resetToken:req.query.token } }
+  )
  }).then(result => {
   if(!result) {
     let error = new Error();
@@ -207,7 +205,6 @@ module.exports.resetPassword = (req, res, next) => {
    err.statusCode = 401;
    err.message = "Error while processing the request";
    throw err;
- })
  })
 } 
 
