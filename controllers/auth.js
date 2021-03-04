@@ -133,7 +133,7 @@ module.exports.postReset =(req, res, next) => {
           to: email,
           subject: 'Password Reset The Insurance House',
           html: ` <h2>You requested a New Password</h2>
-          <p>Click this <a href="https://backend.deepuvalecha.com/reset-password?${token}">link</a> to reset the password</p>`
+          <p>Click this <a href="https://deepuvalecha.com/reset-password?${token}">link</a> to reset the password</p>`
       }
       transporter.sendMail(mail, (err, response) => {
         if(err){
