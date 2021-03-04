@@ -1,7 +1,10 @@
+const fs = require('fs');
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const Sequelize = require("sequelize");
 const ITEMS_PER_PAGE = 10;
+const path = require("path");
+
 
 module.exports.getUsers = (req, res, next) => {
     const page = parseInt(req.query.page); 
@@ -91,17 +94,32 @@ module.exports.updateUser = (req, res, next) => {
 
 module.exports.deleteUser = (req, res, next) => {
   const userId = req.body.id;
-  User.destroy({
+  User.findOne({ where: { id:userId }}).then((user) => {
+    console.log(user)
+    if(user.uploads){
+    const files = user.uploads.split(",");
+    deleteFiles(files);
+  }
+  return User.destroy({
     where: {
       id: userId,
     },
+  })
   })
     .then((result) => {
       res.status(200).send({ result: "User deleted sucessfully!" });
     })
     .catch((err) => {
+      console.log(err);
       res.status(400).send({ result: err.message });
     });
 };
 
+function deleteFiles(files){
+  for (const file of files) {
+      fs.unlinkSync((path.resolve(__dirname,"../uploads", file)), err => {
+          if (err) throw err;
+      });
+  };
+}
 
