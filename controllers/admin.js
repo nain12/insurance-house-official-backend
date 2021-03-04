@@ -117,9 +117,13 @@ module.exports.deleteUser = (req, res, next) => {
 
 function deleteFiles(files){
   for (const file of files) {
-      fs.unlinkSync((path.resolve(__dirname,"../uploads", file)), err => {
+    let filePath = (path.resolve(__dirname,"../uploads", file))
+    console.log(fs.existsSync(filePath))
+    if(fs.existsSync(filePath)){
+      fs.unlinkSync(filePath, err => {
           if (err) throw err;
       });
-  };
+  }
+}
 }
 
