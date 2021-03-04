@@ -11,7 +11,7 @@ const { Op } = require("sequelize");
   }
 })) */
 
-const transporter = nodemailer.createTransport({
+/* const transporter = nodemailer.createTransport({
   host:'smtp.gmail.com',
   port: 465,
   secure: true,
@@ -20,7 +20,35 @@ const transporter = nodemailer.createTransport({
       pass: 'insurance1234'
   }
 });
+ */
 
+/* var transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    XOAuth2: {
+      user: "insurancehouseonline@gmail.com", // Your gmail address.
+                                            // Not @developer.gserviceaccount.com
+      pass: "insurance1234",
+      clientId: "534882566285-mac3pbh1a6i8skukjjbsqqlih7lnpnfr.apps.googleusercontent.com",
+      clientSecret: "x9_JWdWHW25ujbjXtLPcsbT4",
+      refreshToken: "1//04i2BeZvDRqllCgYIARAAGAQSNwF-L9IrZeksSJymGKUFUx8hP2Yl92a-2sKu8zelcStjUpMAq-iBdeU-Tcb8frwyDzWViI0-B9Q"
+    }
+  }
+}) */
+
+let transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+      type: 'OAuth2',
+      user: 'insurancehouseonline@gmail.com',
+      clientId: '534882566285-mac3pbh1a6i8skukjjbsqqlih7lnpnfr.apps.googleusercontent.com',
+      clientSecret: 'x9_JWdWHW25ujbjXtLPcsbT4',
+      refreshToken: '1//04i2BeZvDRqllCgYIARAAGAQSNwF-L9IrZeksSJymGKUFUx8hP2Yl92a-2sKu8zelcStjUpMAq-iBdeU-Tcb8frwyDzWViI0-B9Q',
+      accessToken: 'ya29.A0AfH6SMDjeYmGzPPMyRr9w1CUvgmIz91Lyg1IuYI_v8EYAVzBb8rG5Bbz4c-TYR3QUjqkIaSJ7_pKG5OgLMLUf9upjmH23uSMaEJNmqp0kz5crmPwbU9vhHH2-KNRKXdKdJrCQKk1bGmDvx4oxPQhvK6CHjW9'
+  }
+});
 
 module.exports.postLogin = (req, res, next) => {
   const email = req.body.email;
@@ -105,7 +133,7 @@ module.exports.postReset =(req, res, next) => {
           to: email,
           subject: 'Password Reset The Insurance House',
           html: ` <h2>You requested a New Password</h2>
-          <p>Click this <a href="http://31.220.51.195/reset-password?${token}">link</a> to reset the password</p>`
+          <p>Click this <a href="https://backend.deepuvalecha.com/reset-password?${token}">link</a> to reset the password</p>`
       }
       transporter.sendMail(mail, (err, response) => {
         if(err){
