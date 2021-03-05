@@ -54,7 +54,6 @@ module.exports.postUser = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
-  console.log("Files", +  req.files);
   let fileNames = [];
    for(let i = 0; i < req.files.length; i++) {
      fileNames.push(req.files[i].filename);
@@ -109,6 +108,33 @@ module.exports.deleteUser = (req, res, next) => {
     .then((result) => {
       res.status(200).send({ result: "User deleted sucessfully!" });
     })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send({ result: err.message });
+    });
+};
+
+module.exports.getUser = (req, res, next) => {
+  const requestBody = req.body
+  let criteriaName;
+  let criteriaValue;
+  for(const [key, value] of Object.entries(requestBody)){
+    criteriaName = key;
+    criteriaValue = value
+  }
+
+  User.findAll({ where: {[criteriaName]: {
+    [Sequelize.Op.like] : `%${criteriaValue}%`
+  }}}).then((result) => {
+    console.log(result);
+    if(!result) {
+      let error = new Error();
+      error.statusCode = 404;
+      error.message = 'User not found.';
+      throw error;
+    }
+    res.status(200).send({ result: result });
+  })
     .catch((err) => {
       console.log(err);
       res.status(400).send({ result: err.message });

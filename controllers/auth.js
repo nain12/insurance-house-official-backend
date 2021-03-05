@@ -73,7 +73,6 @@ module.exports.postLogin = (req, res, next) => {
         policy = user.policy,
         comments = user.comments;
         uploads = user.uploads;
-        console.log('User', user);
         return bcrypt.compare(password, user.password);
       } else {
         const error = new Error(
@@ -175,7 +174,6 @@ module.exports.verifyResetPassword = (req, res, next) => {
 } 
 
 module.exports.resetPassword = (req, res, next) => {
-  console.log("Request params", req.query)
   User.findOne({
    where: {
     resetToken:req.query.token
@@ -208,3 +206,22 @@ module.exports.resetPassword = (req, res, next) => {
  })
 } 
 
+exports.postEnquiry = (req, res, next) => {
+  const name = req.body.name
+  const email = req.body.email
+  const message = req.body.message 
+
+  const mail = {
+    from: 'insurancehouseonline@gmail.com',
+    to: email,
+    subject: 'Message from Insurance House Official Online',
+    html: `<h3>Name:</h3><span>${name}</span><br/><h3>Email:</h3><span>${email}</span><br/><h3>Message:</h3><span>${message}</span><br/>`
+}
+transporter.sendMail(mail, (err, response) => {
+  if(err){
+      console.log(err);
+  } else {
+      console.log('Message sent');
+      return res.status(200).send({ result: 'Email sent' });
+  }})
+}

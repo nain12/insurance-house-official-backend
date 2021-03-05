@@ -62,6 +62,8 @@ app.get("/download", function(req, res, next){
     res.status(404).send({ result: err.message });
   }
 });
+app.post("/contact-us", authRoutes);
+app.post("/search-user", adminRoutes);
 
 sequelize
   .sync()
