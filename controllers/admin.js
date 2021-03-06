@@ -72,7 +72,7 @@ module.exports.updateUser = (req, res, next) => {
         name: name,
         email: email,
         policy: policy,
-        uploads: user.uploads ? user.uploads + " " + uploads : uploads,
+        uploads: user.uploads ? user.uploads + "," + uploads : uploads,
         comments: comments,
       },
       {
